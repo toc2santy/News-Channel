@@ -46,18 +46,21 @@ export const SOURCES: NewsSource[] = [
   // Private commercial outlets, not public-service broadcasters — Tier 4
   // (same rationale as IGN/Ars Technica above), included only for their
   // world-news overlap value for cross-verification.
-  { name: "The Guardian World", tier: 4, url: "https://www.theguardian.com/world/rss", defaultCategory: "international", country: "United Kingdom", language: "English" },
-  { name: "Sky News World", tier: 4, url: "https://feeds.skynews.com/feeds/rss/world.xml", defaultCategory: "international", country: "United Kingdom", language: "English" },
+  { name: "The Guardian World", tier: 4, url: "https://www.theguardian.com/world/rss", defaultCategory: "newspaper-international", country: "United Kingdom", language: "English" },
+  { name: "Sky News World", tier: 4, url: "https://feeds.skynews.com/feeds/rss/world.xml", defaultCategory: "newspaper-international", country: "United Kingdom", language: "English" },
   // Legitimacy-checked international newspapers (privately/trust-owned, no
   // state control, none on any propaganda watchlist) added to fill real
   // geographic gaps: previously the only India source was PIB (the
   // government's own press office, not independent journalism), the only
   // Japan source was NHK's Japanese-language feed, and there was no
-  // dedicated US or France newspaper voice at all.
-  { name: "The Hindu", tier: 4, url: "https://www.thehindu.com/feeder/default.rss", defaultCategory: "international", country: "India", language: "English" },
-  { name: "The Japan Times", tier: 4, url: "https://www.japantimes.co.jp/feed/", defaultCategory: "international", country: "Japan", language: "English" },
-  { name: "Le Monde", tier: 4, url: "https://www.lemonde.fr/en/rss/une.xml", defaultCategory: "international", country: "France", language: "English" },
-  { name: "The New York Times World", tier: 4, url: "https://rss.nytimes.com/services/xml/rss/nyt/World.xml", defaultCategory: "international", country: "United States", language: "English" },
+  // dedicated US or France newspaper voice at all. Grouped separately from
+  // the broadcaster/wire "international" category as their own Newspaper
+  // section — The Hindu is India's own national paper (newspaper-national),
+  // the rest are foreign papers (newspaper-international).
+  { name: "The Hindu", tier: 4, url: "https://www.thehindu.com/feeder/default.rss", defaultCategory: "newspaper-national", country: "India", language: "English" },
+  { name: "The Japan Times", tier: 4, url: "https://www.japantimes.co.jp/feed/", defaultCategory: "newspaper-international", country: "Japan", language: "English" },
+  { name: "Le Monde", tier: 4, url: "https://www.lemonde.fr/en/rss/une.xml", defaultCategory: "newspaper-international", country: "France", language: "English" },
+  { name: "The New York Times World", tier: 4, url: "https://rss.nytimes.com/services/xml/rss/nyt/World.xml", defaultCategory: "newspaper-international", country: "United States", language: "English" },
   // NHK World (English) has no reliably-working public RSS URL — this is
   // NHK's domestic Japanese-language feed instead, confirmed working.
   { name: "NHK News (Japanese)", tier: 2, url: "https://www3.nhk.or.jp/rss/news/cat0.xml", defaultCategory: "international", country: "Japan", language: "Japanese" },
@@ -118,6 +121,8 @@ export const CATEGORIES = [
   { id: "defence-aerospace", label: "Defence & Aerospace" },
   { id: "india-govt", label: "Indian Government Projects" },
   { id: "international", label: "International News" },
+  { id: "newspaper-international", label: "Newspaper — International" },
+  { id: "newspaper-national", label: "Newspaper — National (India)" },
   { id: "climate-environment", label: "Climate & Environment" },
   { id: "health-medicine", label: "Health & Medicine" },
   { id: "general-awareness", label: "General Awareness" },
