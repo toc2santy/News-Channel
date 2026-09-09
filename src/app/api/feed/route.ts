@@ -17,17 +17,50 @@ export async function GET(req: NextRequest) {
     take: 100,
   });
 
-  // Cross-verification: a clusterKey backed by >=2 distinct source names is
-  // "Verified"; everything else is "Developing / single-source" (see
-  // PLANNING.md section 3, bias-control mechanism).
-  const sourceCountByCluster = new Map<string, Set<string>>();
-  for (const a of articles) {
-    const set = sourceCountByCluster.get(a.clusterKey) ?? new Set<string>();
-    set.add(a.sourceName);
-    sourceCountByCluster.set(a.clusterKey, set);
+  // Cross-verification (PLANNING.md section 3): a story is "Verified" once
+  // 2+ distinct sources are independently reporting it, "Developing /
+  // single-source" otherwise. Different outlets almost never phrase a
+  // headline identically, so this can't be exact clusterKey equality — it
+  // compares each pair of same-category articles from different sources by
+  // how much their significant-word sets (clusterKey, a sorted bag of words
+  // — see categorize.ts) overlap. A short, generic overlap (one shared word)
+  // shouldn't count, so both a minimum shared-word count and a minimum
+  // overlap-coefficient (shared / smaller article's word count) must pass.
+  // Capped to stories within 3 days of each other so two accidentally
+  // similar-sounding headlines from unrelated dates don't cross-verify.
+  const MIN_SHARED_WORDS = 2;
+  const MIN_OVERLAP_COEFFICIENT = 0.3;
+  const MAX_DAYS_APART = 3;
+
+  const wordSets = articles.map((a) => new Set(a.clusterKey.split(" ").filter(Boolean)));
+
+  function overlaps(i: number, j: number): boolean {
+    const a = articles[i];
+    const b = articles[j];
+    if (a.sourceName === b.sourceName || a.category !== b.category) return false;
+    const daysApart = Math.abs(a.publishedAt.getTime() - b.publishedAt.getTime()) / 86400000;
+    if (daysApart > MAX_DAYS_APART) return false;
+
+    const setA = wordSets[i];
+    const setB = wordSets[j];
+    let shared = 0;
+    for (const w of setA) if (setB.has(w)) shared++;
+    if (shared < MIN_SHARED_WORDS) return false;
+    return shared / Math.min(setA.size, setB.size) >= MIN_OVERLAP_COEFFICIENT;
   }
 
-  const result = articles.map((a) => ({
+  const verifiedIndex = new Set<number>();
+  for (let i = 0; i < articles.length; i++) {
+    if (verifiedIndex.has(i)) continue;
+    for (let j = i + 1; j < articles.length; j++) {
+      if (overlaps(i, j)) {
+        verifiedIndex.add(i);
+        verifiedIndex.add(j);
+      }
+    }
+  }
+
+  const result = articles.map((a, i) => ({
     id: a.id,
     title: a.title,
     link: a.link,
@@ -39,7 +72,7 @@ export async function GET(req: NextRequest) {
     keyPoints: JSON.parse(a.keyPoints) as string[],
     imageUrl: a.imageUrl,
     isStateMedia: a.isStateMedia,
-    verified: (sourceCountByCluster.get(a.clusterKey)?.size ?? 1) >= 2,
+    verified: verifiedIndex.has(i),
   }));
 
   return NextResponse.json({ articles: result });

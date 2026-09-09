@@ -135,16 +135,34 @@ export function extractImage(item: RawItemForImage): string | undefined {
   return undefined;
 }
 
-// Normalize a title for cross-source dedup/clustering (strip punctuation,
-// lowercase, collapse whitespace). Good enough for the MVP; swap for
-// embedding-similarity clustering once volume grows.
+// Common short filler words that carry no story-identifying signal — dropped
+// so cross-source matching keys on the words that actually distinguish one
+// story from another (names, places, events).
+const STOPWORDS = new Set([
+  "the", "a", "an", "of", "in", "on", "at", "to", "for", "and", "or", "with",
+  "from", "by", "is", "are", "was", "were", "after", "before", "amid", "over",
+  "as", "its", "his", "her", "their", "says", "say", "said", "new", "into",
+  "out", "up", "down", "during", "this", "that", "has", "have", "had", "be",
+  "will", "not", "but", "who", "what", "how", "why", "amp",
+]);
+
+// Produces a bag-of-significant-words key for cross-source dedup/verification
+// (see PLANNING.md section 3's "2+ independent sources" rule, applied in
+// src/app/api/feed/route.ts). Deliberately NOT ASCII-only: an earlier version
+// used [^a-z0-9\s], which strips every Devanagari/Arabic character and
+// collapses all non-Latin-script titles to the same empty key — silently
+// cross-verifying unrelated Hindi (PIB) and Arabic (BBC Arabic) stories
+// against each other. \p{L}/\p{N} keeps any script's letters/digits instead.
+// Sorted + deduped so word order and repeats don't matter; the API layer
+// does overlap-based (not exact) matching on top of this, since two outlets
+// covering the same event rarely phrase the headline identically.
 export function clusterKey(title: string): string {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, "")
-    .replace(/\s+/g, " ")
-    .trim()
-    .split(" ")
-    .slice(0, 8)
-    .join(" ");
+  const cleaned = title.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, " ");
+  const words = cleaned
+    .split(/\s+/)
+    .filter((w) => w.length >= 3 && !STOPWORDS.has(w));
+  const significant = [...new Set(words)].sort();
+  // Fallback for titles that are entirely short/stopword tokens (rare) —
+  // still unicode-safe, just less discriminating.
+  return significant.length ? significant.join(" ") : cleaned.trim().split(/\s+/).slice(0, 4).join(" ");
 }

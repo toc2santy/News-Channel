@@ -37,6 +37,17 @@ export const SOURCES: NewsSource[] = [
   { name: "Al Jazeera English", tier: 2, url: "https://www.aljazeera.com/xml/rss/all.xml", defaultCategory: "international", country: "Qatar", language: "English" },
   { name: "CBC World", tier: 2, url: "https://www.cbc.ca/cmlink/rss-world", defaultCategory: "international", country: "Canada", language: "English" },
   { name: "ABC News Australia", tier: 2, url: "https://www.abc.net.au/news/feed/51120/rss.xml", defaultCategory: "international", country: "Australia", language: "English" },
+  // These four are added specifically to overlap with the above on major
+  // world stories (same day, same event) so the cross-verification check in
+  // src/app/api/feed/route.ts actually has multiple independent outlets to
+  // compare — a single outlet can never self-verify.
+  { name: "Euronews", tier: 2, url: "https://www.euronews.com/rss?level=theme&name=news", defaultCategory: "international", language: "English" },
+  { name: "France 24", tier: 2, url: "https://www.france24.com/en/rss", defaultCategory: "international", country: "France", language: "English" },
+  // Private commercial outlets, not public-service broadcasters — Tier 4
+  // (same rationale as IGN/Ars Technica above), included only for their
+  // world-news overlap value for cross-verification.
+  { name: "The Guardian World", tier: 4, url: "https://www.theguardian.com/world/rss", defaultCategory: "international", country: "United Kingdom", language: "English" },
+  { name: "Sky News World", tier: 4, url: "https://feeds.skynews.com/feeds/rss/world.xml", defaultCategory: "international", country: "United Kingdom", language: "English" },
   // NHK World (English) has no reliably-working public RSS URL — this is
   // NHK's domestic Japanese-language feed instead, confirmed working.
   { name: "NHK News (Japanese)", tier: 2, url: "https://www3.nhk.or.jp/rss/news/cat0.xml", defaultCategory: "international", country: "Japan", language: "Japanese" },
