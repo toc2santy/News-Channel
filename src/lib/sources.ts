@@ -29,7 +29,7 @@ export const SOURCES: NewsSource[] = [
   // --- General / International (Tier 2 public broadcasters) ---
   { name: "BBC World", tier: 2, url: "http://feeds.bbci.co.uk/news/world/rss.xml", defaultCategory: "international", country: "United Kingdom", language: "English" },
   { name: "BBC Business", tier: 2, url: "http://feeds.bbci.co.uk/news/business/rss.xml", defaultCategory: "business", country: "United Kingdom", language: "English" },
-  { name: "BBC Science & Environment", tier: 2, url: "http://feeds.bbci.co.uk/news/science_and_environment/rss.xml", defaultCategory: "science-invention", country: "United Kingdom", language: "English" },
+  { name: "BBC Science & Environment", tier: 2, url: "http://feeds.bbci.co.uk/news/science_and_environment/rss.xml", defaultCategory: "climate-environment", country: "United Kingdom", language: "English" },
   { name: "BBC Technology", tier: 2, url: "http://feeds.bbci.co.uk/news/technology/rss.xml", defaultCategory: "ai-tech", country: "United Kingdom", language: "English" },
   { name: "BBC Sport", tier: 2, url: "http://feeds.bbci.co.uk/sport/rss.xml?edition=int", defaultCategory: "sports", country: "United Kingdom", language: "English" },
   { name: "BBC Entertainment & Arts", tier: 2, url: "http://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml", defaultCategory: "fiction-entertainment", country: "United Kingdom", language: "English" },
@@ -70,17 +70,24 @@ export const SOURCES: NewsSource[] = [
   // still get tagged correctly instead of falling into india-govt.
   { name: "PIB India", tier: 3, url: "https://pib.gov.in/RssMain.aspx?ModId=6&Lang=1&Regid=3", defaultCategory: "india-govt", country: "India", language: "Hindi" },
   { name: "UN News", tier: 3, url: "https://news.un.org/feed/subscribe/en/news/all/rss.xml", defaultCategory: "general-awareness", language: "English" },
-  { name: "WHO News", tier: 3, url: "https://www.who.int/rss-feeds/news-english.xml", defaultCategory: "general-awareness", language: "English" },
-  { name: "NASA News", tier: 3, url: "https://www.nasa.gov/news-release/feed/", defaultCategory: "science-invention", country: "United States", language: "English" },
-  { name: "ESA", tier: 3, url: "https://www.esa.int/rssfeed/Our_Activities", defaultCategory: "science-invention", language: "English" },
+  { name: "WHO News", tier: 3, url: "https://www.who.int/rss-feeds/news-english.xml", defaultCategory: "health-medicine", language: "English" },
+  { name: "NASA News", tier: 3, url: "https://www.nasa.gov/news-release/feed/", defaultCategory: "space-astronomy", country: "United States", language: "English" },
+  { name: "ESA", tier: 3, url: "https://www.esa.int/rssfeed/Our_Activities", defaultCategory: "space-astronomy", language: "English" },
+  // Academic/institutional infectious-disease research center (University of
+  // Minnesota) — overlaps with WHO News on outbreak/public-health stories
+  // for cross-verification, same rationale as the international-news set.
+  { name: "CIDRAP", tier: 3, url: "https://www.cidrap.umn.edu/rss.xml", defaultCategory: "health-medicine", country: "United States", language: "English" },
 
   // --- Independent editorial/trade press (Tier 4) — fills verticals no wire
-  // agency or public broadcaster covers (games, gadgets, deep tech). ---
+  // agency or public broadcaster covers (games, gadgets, deep tech, EVs). ---
   { name: "IGN", tier: 4, url: "https://feeds.ign.com/ign/games-all", defaultCategory: "games", language: "English" },
   { name: "Eurogamer", tier: 4, url: "https://www.eurogamer.net/feed", defaultCategory: "games", language: "English" },
   { name: "Ars Technica Gadgets", tier: 4, url: "https://feeds.arstechnica.com/arstechnica/gadgets", defaultCategory: "electronics", language: "English" },
   { name: "MIT Technology Review", tier: 4, url: "https://www.technologyreview.com/feed/", defaultCategory: "ai-tech", language: "English" },
   { name: "CBC Business", tier: 2, url: "https://www.cbc.ca/cmlink/rss-business", defaultCategory: "business", country: "Canada", language: "English" },
+  { name: "Climate Home News", tier: 4, url: "https://www.climatechangenews.com/feed/", defaultCategory: "climate-environment", language: "English" },
+  { name: "Electrek", tier: 4, url: "https://electrek.co/feed/", defaultCategory: "automobiles-ev", language: "English" },
+  { name: "Autocar", tier: 4, url: "https://www.autocar.co.uk/rss", defaultCategory: "automobiles-ev", country: "United Kingdom", language: "English" },
 ];
 
 export const CATEGORIES = [
@@ -88,9 +95,13 @@ export const CATEGORIES = [
   { id: "games", label: "Games / Esports" },
   { id: "electronics", label: "Electronics & Gadgets" },
   { id: "science-invention", label: "Science & New Inventions" },
+  { id: "space-astronomy", label: "Space & Astronomy" },
   { id: "ai-tech", label: "AI / Technology" },
+  { id: "automobiles-ev", label: "Automobiles & EVs" },
   { id: "india-govt", label: "Indian Government Projects" },
   { id: "international", label: "International News" },
+  { id: "climate-environment", label: "Climate & Environment" },
+  { id: "health-medicine", label: "Health & Medicine" },
   { id: "general-awareness", label: "General Awareness" },
   { id: "business", label: "Business & Markets" },
   { id: "fiction-entertainment", label: "Fiction / Entertainment" },

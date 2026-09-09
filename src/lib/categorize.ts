@@ -17,11 +17,35 @@ const CATEGORY_KEYWORDS: Record<CategoryId, string[]> = {
   sports: ["cricket", "football", "olympic", "tennis", "match", "tournament", "medal", "athlete"],
   games: ["esports", "video game", "gaming", "playstation", "xbox", "steam"],
   electronics: ["smartphone", "gadget", "chip", "semiconductor", "processor", "device launch"],
-  "science-invention": ["discovery", "invention", "research", "study finds", "breakthrough", "space", "telescope"],
+  // Checked before "science-invention" so a generic "research"/"discovery"
+  // story that's specifically about space/astronomy lands in the more
+  // specific category rather than the broad catch-all.
+  // Bare "space" and "galaxy" are deliberately excluded — "space" matches
+  // "boot space"/"legroom space" in car reviews and "hangout space" in game
+  // descriptions, and "galaxy" collides with the Samsung Galaxy phone line;
+  // both are too generic for a category meant to be about actual astronomy.
+  "space-astronomy": ["nasa", "esa", "astronomy", "telescope", "asteroid", "spacecraft", "space station", "space telescope", "space mission", "space agency", "outer space", "astronaut", "rocket launch", "moon landing", "exoplanet"],
+  "science-invention": ["discovery", "invention", "research", "study finds", "breakthrough"],
   "ai-tech": ["artificial intelligence", "ai", "machine learning", "chatbot", "algorithm", "large language model"],
+  // containsKeyword requires an exact word-boundary match, so plural forms
+  // need their own entries ("hybrid car" doesn't match "hybrid cars").
+  "automobiles-ev": [
+    "electric vehicle", "electric vehicles", "ev sales", "automaker", "automakers",
+    "car maker", "car makers", "hybrid car", "hybrid cars", "self-driving",
+    "autonomous vehicle", "autonomous vehicles", "vehicle recall", "tesla",
+    "electric car", "electric cars", "electric motorcycle", "supermini", "bhp",
+  ],
   "india-govt": ["ministry", "cabinet", "pib", "government of india", "lok sabha", "rajya sabha", "scheme"],
   international: [],
-  "general-awareness": ["health", "climate", "education", "who", "united nations", "public awareness"],
+  // Checked before "general-awareness" so a climate/health story doesn't
+  // fall into that broader catch-all instead.
+  "climate-environment": ["climate", "emissions", "biodiversity", "wildlife", "pollution", "renewable energy", "deforestation", "global warming", "extreme weather", "drought", "wildfire"],
+  // "who" is deliberately excluded — as a bare keyword it matches the common
+  // English pronoun ("Who are the key actors...") far more often than the
+  // WHO institution; sources whose defaultCategory is health-medicine (WHO
+  // News, CIDRAP) don't need the keyword to land here anyway.
+  "health-medicine": ["health", "disease", "vaccine", "hospital", "outbreak", "pandemic", "virus", "clinical trial", "medicine", "medical"],
+  "general-awareness": ["education", "united nations", "public awareness"],
   business: ["market", "stock", "economy", "inflation", "trade", "earnings", "gdp"],
 };
 
