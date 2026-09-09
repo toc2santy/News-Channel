@@ -94,6 +94,10 @@ main.content { padding: 28px 32px 90px; max-width: 100%; }
 .pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
 .pill { font-family: var(--font-mono); font-size: .68rem; padding: 5px 11px; border: 1px solid var(--border); border-radius: 2px; color: var(--text-dim); background: none; cursor: pointer; }
 .pill.active { color: var(--text); border-color: var(--hue-cyan); background: var(--tint-cyan); }
+/* Sources with no articles in the current (possibly filtered) feed — kept
+   visible so the full source list is still legible, but clearly de-emphasized
+   next to the highlighted ones actually contributing right now. */
+.pill-dim { color: var(--text-faint); border-color: var(--border-soft); opacity: .55; cursor: default; }
 
 /* ===== form controls ===== */
 .select { width: 100%; background: var(--panel-alt); border: 1px solid var(--border); color: var(--text); border-radius: 2px; padding: 8px 10px; font-family: var(--font-body); font-size: .85rem; }
