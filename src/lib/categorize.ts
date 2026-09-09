@@ -35,6 +35,22 @@ const CATEGORY_KEYWORDS: Record<CategoryId, string[]> = {
     "autonomous vehicle", "autonomous vehicles", "vehicle recall", "tesla",
     "electric car", "electric cars", "electric motorcycle", "supermini", "bhp",
   ],
+  // Checked before "india-govt" so "Ministry of Defence" stories don't get
+  // swallowed by that category's generic "ministry" keyword first — same
+  // ordering principle as fiction-entertainment vs. india-govt above.
+  // PLANNING.md section 2 scopes this to factual/wire coverage only, no
+  // opinion/punditry — Defense News and Breaking Defense are trade-press
+  // industry reporting (program status, acquisitions, tests), not
+  // geopolitical commentary desks.
+  "defence-aerospace": [
+    "defence ministry", "defense ministry", "military", "airstrike", "air strike",
+    "fighter jet", "aircraft carrier", "warship", "arms deal", "weapons system",
+    "missile test", "missile strike", "missile", "drdo", "nato", "aerospace",
+    "defence contractor", "defense contractor", "special forces", "army chief",
+    "naval", "submarine",
+    // Hindi — PIB frequently publishes Defence Ministry releases untranslated.
+    "रक्षा मंत्री", "रक्षा मंत्रालय", "वायु सेना", "नौसेना", "थल सेना", "डीआरडीओ",
+  ],
   "india-govt": ["ministry", "cabinet", "pib", "government of india", "lok sabha", "rajya sabha", "scheme"],
   international: [],
   // Checked before "general-awareness" so a climate/health story doesn't

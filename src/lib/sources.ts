@@ -88,6 +88,13 @@ export const SOURCES: NewsSource[] = [
   { name: "Climate Home News", tier: 4, url: "https://www.climatechangenews.com/feed/", defaultCategory: "climate-environment", language: "English" },
   { name: "Electrek", tier: 4, url: "https://electrek.co/feed/", defaultCategory: "automobiles-ev", language: "English" },
   { name: "Autocar", tier: 4, url: "https://www.autocar.co.uk/rss", defaultCategory: "automobiles-ev", country: "United Kingdom", language: "English" },
+  // Defense trade press — factual industry/program reporting (acquisitions,
+  // tests, deployments), not geopolitical opinion desks, per PLANNING.md
+  // section 2's "factual/wire-only" scope for this category. The two
+  // overlap on major program/conflict stories, giving cross-verification
+  // something real to match.
+  { name: "Defense News", tier: 4, url: "https://www.defensenews.com/arc/outboundfeeds/rss/", defaultCategory: "defence-aerospace", language: "English" },
+  { name: "Breaking Defense", tier: 4, url: "https://breakingdefense.com/feed/", defaultCategory: "defence-aerospace", language: "English" },
 ];
 
 export const CATEGORIES = [
@@ -98,6 +105,7 @@ export const CATEGORIES = [
   { id: "space-astronomy", label: "Space & Astronomy" },
   { id: "ai-tech", label: "AI / Technology" },
   { id: "automobiles-ev", label: "Automobiles & EVs" },
+  { id: "defence-aerospace", label: "Defence & Aerospace" },
   { id: "india-govt", label: "Indian Government Projects" },
   { id: "international", label: "International News" },
   { id: "climate-environment", label: "Climate & Environment" },
