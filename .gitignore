@@ -36,6 +36,13 @@ yarn-error.log*
 # vercel
 .vercel
 
+# database (local sqlite dev)
+/prisma/dev.db
+/prisma/*.db-journal
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# machine/session-local tool state
+.claude/scheduled_tasks.lock

@@ -1,0 +1,32 @@
+// Dev datasource is SQLite for zero-setup local development.
+// Swap provider to "postgresql" + DATABASE_URL for the Supabase-hosted MVP.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Article {
+  id            String   @id @default(cuid())
+  title         String
+  link          String   @unique
+  sourceName    String
+  sourceTier    Int
+  category      String
+  country       String?
+  language      String   @default("English") // actual language of the source text, e.g. "Hindi" for PIB
+  publishedAt   DateTime
+  keyPoints     String   // JSON-encoded string[] of extracted bullet points
+  imageUrl      String?  // publisher-supplied thumbnail (media:content/enclosure) — never hotlinked full-text
+  clusterKey    String   // normalized title used for cross-source dedup/verification
+  isStateMedia  Boolean  @default(false)
+  createdAt     DateTime @default(now())
+
+  @@index([category])
+  @@index([country])
+  @@index([clusterKey])
+  @@index([publishedAt])
+}
