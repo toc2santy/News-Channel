@@ -49,13 +49,14 @@ export async function GET(req: NextRequest) {
     return shared / Math.min(setA.size, setB.size) >= MIN_OVERLAP_COEFFICIENT;
   }
 
-  const verifiedIndex = new Set<number>();
+  // Which other sources corroborate each article — not just whether it's
+  // verified, so the UI can show the reader exactly who agrees on the story.
+  const corroboratingSources: Set<string>[] = articles.map(() => new Set());
   for (let i = 0; i < articles.length; i++) {
-    if (verifiedIndex.has(i)) continue;
     for (let j = i + 1; j < articles.length; j++) {
       if (overlaps(i, j)) {
-        verifiedIndex.add(i);
-        verifiedIndex.add(j);
+        corroboratingSources[i].add(articles[j].sourceName);
+        corroboratingSources[j].add(articles[i].sourceName);
       }
     }
   }
@@ -72,7 +73,8 @@ export async function GET(req: NextRequest) {
     keyPoints: JSON.parse(a.keyPoints) as string[],
     imageUrl: a.imageUrl,
     isStateMedia: a.isStateMedia,
-    verified: verifiedIndex.has(i),
+    verified: corroboratingSources[i].size > 0,
+    verifiedSources: [...corroboratingSources[i]],
   }));
 
   return NextResponse.json({ articles: result });

@@ -11,6 +11,7 @@ export interface FeedArticle {
   imageUrl?: string | null;
   isStateMedia: boolean;
   verified: boolean;
+  verifiedSources: string[];
 }
 
 // Deterministic gradient per source so cards without a publisher image still
@@ -58,7 +59,11 @@ export function NewsCard({ article, index, size = "normal" }: { article: FeedArt
 
         <div className="absolute top-2 right-2 flex gap-1">
           {article.isStateMedia && <span className="stamp state" style={{ background: "rgba(10,14,11,.7)" }}>State-aff.</span>}
-          <span className={`stamp ${article.verified ? "verified" : "developing"}`} style={{ background: "rgba(10,14,11,.7)" }}>
+          <span
+            className={`stamp ${article.verified ? "verified" : "developing"}`}
+            style={{ background: "rgba(10,14,11,.7)" }}
+            title={article.verified ? `Also reported by: ${article.verifiedSources.join(", ")}` : undefined}
+          >
             {article.verified ? "Verified" : "Developing"}
           </span>
         </div>
@@ -80,6 +85,12 @@ export function NewsCard({ article, index, size = "normal" }: { article: FeedArt
             </li>
           ))}
         </ul>
+
+        {article.verified && (
+          <div className="mono text-xs" style={{ color: "var(--low)" }}>
+            ✓ Confirmed by {article.sourceName} + {article.verifiedSources.join(", ")}
+          </div>
+        )}
 
         <div className="mono mt-auto flex items-center gap-2 text-xs pt-1" style={{ color: "var(--text-faint)" }}>
           {article.country && <span>{article.country}</span>}
