@@ -7,14 +7,25 @@ export async function GET(req: NextRequest) {
   const countries = searchParams.getAll("country");
   const languages = searchParams.getAll("language");
 
+  // How far back to look — "1" (today/last 24h, the default) or "2" (also
+  // include the day before). Clamped rather than trusting the raw param so a
+  // bad/missing value can't accidentally return the whole unbounded table.
+  const daysParam = Number(searchParams.get("days"));
+  const days = daysParam === 2 ? 2 : 1;
+  const since = new Date(Date.now() - days * 86400000);
+  // A 2-day window has roughly double the candidate stories of a 1-day one
+  // across 30+ sources, so it gets a higher cap to match.
+  const take = days === 2 ? 200 : 100;
+
   const articles = await prisma.article.findMany({
     where: {
+      publishedAt: { gte: since },
       ...(categories.length ? { category: { in: categories } } : {}),
       ...(countries.length ? { country: { in: countries } } : {}),
       ...(languages.length ? { language: { in: languages } } : {}),
     },
     orderBy: { publishedAt: "desc" },
-    take: 100,
+    take,
   });
 
   // Cross-verification (PLANNING.md section 3): a story is "Verified" once

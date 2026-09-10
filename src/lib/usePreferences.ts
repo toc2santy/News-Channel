@@ -7,13 +7,17 @@ import { useEffect, useState } from "react";
 // minimization for the MVP).
 const STORAGE_KEY = "news-channel:prefs:v1";
 
+export type DateRange = 1 | 2;
+
 interface Prefs {
   categories: string[];
   countries: string[];
   languages: string[];
+  // 1 = today/last 24h (default), 2 = also include the day before.
+  dateRange: DateRange;
 }
 
-const DEFAULT_PREFS: Prefs = { categories: [], countries: [], languages: [] };
+const DEFAULT_PREFS: Prefs = { categories: [], countries: [], languages: [], dateRange: 1 };
 
 export function usePreferences() {
   const [prefs, setPrefs] = useState<Prefs>(DEFAULT_PREFS);
@@ -63,5 +67,9 @@ export function usePreferences() {
     }));
   }
 
-  return { prefs, loaded, toggleCategory, toggleCountry, toggleLanguage };
+  function setDateRange(range: DateRange) {
+    setPrefs((p) => ({ ...p, dateRange: range }));
+  }
+
+  return { prefs, loaded, toggleCategory, toggleCountry, toggleLanguage, setDateRange };
 }

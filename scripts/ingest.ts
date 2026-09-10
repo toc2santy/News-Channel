@@ -89,6 +89,18 @@ async function ingestSource(source: (typeof SOURCES)[number]) {
   return { ok, failed: (feed.items?.length ?? 0) - ok };
 }
 
+// The feed UI only ever shows up to "last 2 days" (see src/app/api/feed/
+// route.ts), so nothing older than that is reachable — keep a few days of
+// slack past that window (in case of a missed ingest run) rather than
+// deleting right at the UI boundary, but don't let the table grow forever.
+const RETENTION_DAYS = 5;
+
+async function pruneOldArticles() {
+  const cutoff = new Date(Date.now() - RETENTION_DAYS * 86400000);
+  const { count } = await prisma.article.deleteMany({ where: { publishedAt: { lt: cutoff } } });
+  if (count > 0) console.log(`Pruned ${count} articles older than ${RETENTION_DAYS} days.`);
+}
+
 // Exported so scripts/scheduler.ts can call it in-process (no subprocess
 // spawning, no cross-platform path issues).
 export async function runIngestOnce() {
@@ -97,6 +109,7 @@ export async function runIngestOnce() {
     const { ok } = await ingestSource(source);
     console.log(`  ${source.name}: ${ok} articles upserted`);
   }
+  await pruneOldArticles();
   console.log("Done.");
 }
 
