@@ -55,10 +55,10 @@ const CATEGORY_KEYWORDS: Record<CategoryId, string[]> = {
   international: [],
   // No keywords — these two are entirely defaultCategory-driven (see
   // src/lib/sources.ts: The Hindu -> newspaper-national, Guardian/Sky
-  // News/Japan Times/Le Monde/NYT -> newspaper-international), same as
-  // "international" above. A keyword-matched category always wins over a
-  // source's default when both apply, so a Guardian defense story still
-  // correctly lands in "defence-aerospace" rather than here.
+  // News/Japan Times/Le Monde/NYT/Africa Report -> newspaper-international),
+  // same as "international" above. A keyword-matched category always wins
+  // over a source's default when both apply, so a Guardian defense story
+  // still correctly lands in "defence-aerospace" rather than here.
   "newspaper-international": [],
   "newspaper-national": [],
   // Checked before "general-awareness" so a climate/health story doesn't

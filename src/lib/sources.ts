@@ -97,6 +97,10 @@ export const SOURCES: NewsSource[] = [
   { name: "Eurogamer", tier: 4, url: "https://www.eurogamer.net/feed", defaultCategory: "games", language: "English" },
   { name: "Ars Technica Gadgets", tier: 4, url: "https://feeds.arstechnica.com/arstechnica/gadgets", defaultCategory: "electronics", language: "English" },
   { name: "MIT Technology Review", tier: 4, url: "https://www.technologyreview.com/feed/", defaultCategory: "ai-tech", language: "English" },
+  // Condé Nast-owned, editorially independent tech magazine since 1993 — its
+  // dedicated AI-tag feed overlaps with MIT Tech Review/BBC Technology for
+  // cross-verification (that category was previously thin: 1-2 sources).
+  { name: "Wired", tier: 4, url: "https://www.wired.com/feed/tag/ai/latest/rss", defaultCategory: "ai-tech", language: "English" },
   { name: "CBC Business", tier: 2, url: "https://www.cbc.ca/cmlink/rss-business", defaultCategory: "business", country: "Canada", language: "English" },
   { name: "Climate Home News", tier: 4, url: "https://www.climatechangenews.com/feed/", defaultCategory: "climate-environment", language: "English" },
   { name: "Electrek", tier: 4, url: "https://electrek.co/feed/", defaultCategory: "automobiles-ev", language: "English" },
@@ -108,6 +112,18 @@ export const SOURCES: NewsSource[] = [
   // something real to match.
   { name: "Defense News", tier: 4, url: "https://www.defensenews.com/arc/outboundfeeds/rss/", defaultCategory: "defence-aerospace", language: "English" },
   { name: "Breaking Defense", tier: 4, url: "https://breakingdefense.com/feed/", defaultCategory: "defence-aerospace", language: "English" },
+  // Africa had zero coverage before these two — checked for legitimacy
+  // first: AllAfrica (Washington DC-based, aggregates 100+ African outlets,
+  // no single-state control by construction) and The Africa Report (Jeune
+  // Afrique Media Group, pan-African, editorially independent). The two
+  // overlap on major continental stories for cross-verification, same
+  // rationale as the international-newspaper set above. World Bank and IMF
+  // press releases were also considered (per PLANNING.md's original source
+  // list) but neither exposes a working free RSS feed — IMF blocks every
+  // RSS path with HTTP 403, World Bank's only responsive URL silently
+  // returns the HTML page instead of a feed.
+  { name: "AllAfrica", tier: 4, url: "https://allafrica.com/tools/headlines/rdf/latest/headlines.rdf", defaultCategory: "international", language: "English" },
+  { name: "The Africa Report", tier: 4, url: "https://www.theafricareport.com/feed/", defaultCategory: "newspaper-international", language: "English" },
 ];
 
 export const CATEGORIES = [
