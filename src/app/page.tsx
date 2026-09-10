@@ -9,7 +9,7 @@ import { NewsCard, type FeedArticle } from "@/components/NewsCard";
 import { FeedStats } from "@/components/FeedStats";
 
 export default function Home() {
-  const { prefs, loaded, toggleCategory, toggleCountry, toggleLanguage } = usePreferences();
+  const { prefs, loaded, toggleCategory, toggleCountry, toggleLanguage, setDateRange } = usePreferences();
   const [articles, setArticles] = useState<FeedArticle[]>([]);
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -21,6 +21,7 @@ export default function Home() {
     prefs.categories.forEach((c) => params.append("category", c));
     prefs.countries.forEach((c) => params.append("country", c));
     prefs.languages.forEach((l) => params.append("language", l));
+    params.set("days", String(prefs.dateRange));
 
     fetch(`/api/feed?${params.toString()}`)
       .then((res) => res.json())
@@ -51,7 +52,17 @@ export default function Home() {
         />
 
         <main className="content">
-          <div className="eyebrow">Live Feed</div>
+          <div className="flex items-center justify-between flex-wrap gap-3" style={{ marginBottom: 12 }}>
+            <div className="eyebrow" style={{ marginBottom: 0 }}>Live Feed</div>
+            <div className="pill-row">
+              <button className={`pill ${prefs.dateRange === 1 ? "active" : ""}`} onClick={() => setDateRange(1)}>
+                Today
+              </button>
+              <button className={`pill ${prefs.dateRange === 2 ? "active" : ""}`} onClick={() => setDateRange(2)}>
+                Last 2 days
+              </button>
+            </div>
+          </div>
 
           {status === "loading" && <p style={{ color: "var(--text-faint)" }}>Loading...</p>}
           {status === "error" && <p style={{ color: "var(--crit)" }}>Could not load the feed. Try again shortly.</p>}
