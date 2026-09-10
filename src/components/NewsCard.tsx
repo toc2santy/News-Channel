@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 export interface FeedArticle {
   id: string;
   title: string;
@@ -35,16 +39,29 @@ function timeAgo(iso: string) {
 
 export function NewsCard({ article, index, size = "normal" }: { article: FeedArticle; index: number; size?: "hero" | "normal" }) {
   const imageHeight = size === "hero" ? "h-64 sm:h-80" : "h-36";
+  // Publisher-hosted thumbnails can 404, get CORS/CORP-blocked, or otherwise
+  // fail to load even when imageUrl itself is present — imgFailed catches
+  // that case so we still fall back to the gradient instead of a broken
+  // image icon (the !article.imageUrl check alone only covers the case
+  // where there was never a URL to begin with).
+  const [imgFailed, setImgFailed] = useState(false);
+  const showImage = Boolean(article.imageUrl) && !imgFailed;
 
   return (
     <a href={article.link} target="_blank" rel="noopener noreferrer" className="card">
       <div
         className={`relative ${imageHeight} shrink-0`}
-        style={!article.imageUrl ? { background: placeholderGradient(article.sourceName) } : undefined}
+        style={!showImage ? { background: placeholderGradient(article.sourceName) } : undefined}
       >
-        {article.imageUrl && (
+        {showImage && (
           // eslint-disable-next-line @next/next/no-img-element -- publisher-hosted thumbnails from many domains, not worth an images.domains allowlist for an MVP
-          <img src={article.imageUrl} alt="" className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+          <img
+            src={article.imageUrl!}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+            loading="lazy"
+            onError={() => setImgFailed(true)}
+          />
         )}
         <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(10,14,11,.85), transparent 55%)" }} />
 

@@ -70,6 +70,16 @@ const CATEGORY_KEYWORDS: Record<CategoryId, string[]> = {
   // News, CIDRAP) don't need the keyword to land here anyway.
   "health-medicine": ["health", "disease", "vaccine", "hospital", "outbreak", "pandemic", "virus", "clinical trial", "medicine", "medical"],
   "general-awareness": ["education", "united nations", "public awareness"],
+  // Checked before "business" so a "bitcoin market" story doesn't get
+  // swallowed by that category's generic "market" keyword first. Bare
+  // "crypto" is deliberately excluded — it's also shorthand for
+  // "cryptography" in security/tech articles, so it would mis-tag encryption
+  // stories as cryptocurrency news.
+  cryptocurrency: [
+    "bitcoin", "ethereum", "cryptocurrency", "cryptocurrencies", "blockchain",
+    "stablecoin", "altcoin", "crypto exchange", "crypto wallet", "crypto market",
+    "defi", "nft", "web3", "token launch", "crypto token",
+  ],
   business: ["market", "stock", "economy", "inflation", "trade", "earnings", "gdp"],
 };
 

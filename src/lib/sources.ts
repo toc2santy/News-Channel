@@ -124,6 +124,16 @@ export const SOURCES: NewsSource[] = [
   // returns the HTML page instead of a feed.
   { name: "AllAfrica", tier: 4, url: "https://allafrica.com/tools/headlines/rdf/latest/headlines.rdf", defaultCategory: "international", language: "English" },
   { name: "The Africa Report", tier: 4, url: "https://www.theafricareport.com/feed/", defaultCategory: "newspaper-international", language: "English" },
+  // Crypto trade press — worth an explicit ownership caveat, unlike most
+  // other Tier 4 sources here: CoinDesk has been owned by Bullish, a crypto
+  // exchange, since 2023 (an industry player, not an independent media
+  // company). Included anyway and clearly labeled rather than excluded,
+  // same principle as Al Jazeera's state funding elsewhere in this list —
+  // it and Cointelegraph remain the two most widely-cited crypto news
+  // outlets industry-wide, and no wire agency or public broadcaster
+  // meaningfully covers this beat. Kept to two for cross-verification.
+  { name: "CoinDesk", tier: 4, url: "https://www.coindesk.com/arc/outboundfeeds/rss/", defaultCategory: "cryptocurrency", language: "English" },
+  { name: "Cointelegraph", tier: 4, url: "https://cointelegraph.com/rss", defaultCategory: "cryptocurrency", language: "English" },
 ];
 
 export const CATEGORIES = [
@@ -143,6 +153,7 @@ export const CATEGORIES = [
   { id: "health-medicine", label: "Health & Medicine" },
   { id: "general-awareness", label: "General Awareness" },
   { id: "business", label: "Business & Markets" },
+  { id: "cryptocurrency", label: "Cryptocurrency" },
   { id: "fiction-entertainment", label: "Fiction / Entertainment" },
 ] as const;
 
