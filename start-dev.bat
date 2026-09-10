@@ -35,6 +35,13 @@ for /f "tokens=5" %%p in ('netstat -aon ^| findstr :3000 ^| findstr LISTENING') 
 echo Starting dev server in a separate window...
 start "News Channel Dev Server" cmd /k "cd /d "%~dp0" && npm run dev"
 
+REM Keeps the feed fresh automatically (re-ingests all sources every 15
+REM minutes by default - see INGEST_CRON in scripts/scheduler.ts) so you
+REM don't have to remember to run refresh-news.bat by hand. It also prunes
+REM anything older than 5 days on every run, so the local DB stays small.
+echo Starting the background news scheduler in a separate window...
+start "News Channel Scheduler" cmd /k "cd /d "%~dp0" && npm run schedule"
+
 echo Waiting for the server to come up...
 timeout /t 8 /nobreak >nul
 
@@ -42,8 +49,10 @@ echo Opening http://localhost:3000 in your browser...
 start "" http://localhost:3000
 
 echo.
-echo Done. The dev server keeps running in the other window titled
-echo "News Channel Dev Server" - close that window (or Ctrl+C in it) to stop it.
+echo Done. Two windows are now running:
+echo   "News Channel Dev Server"  - the web app itself
+echo   "News Channel Scheduler"   - re-fetches fresh news every 15 minutes
+echo Close either window (or Ctrl+C in it) to stop that part.
 echo Re-run this script any time to relaunch cleanly.
 pause
 endlocal
